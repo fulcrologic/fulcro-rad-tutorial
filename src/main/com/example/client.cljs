@@ -9,14 +9,10 @@
     [com.fulcrologic.rad.rendering.semantic-ui.semantic-ui-controls :as sui]
     [com.fulcrologic.fulcro.algorithms.timbre-support :refer [console-appender prefix-output-fn]]
     [taoensso.timbre :as log]
-    [taoensso.tufte :as tufte :refer [profile]]
     [com.fulcrologic.rad.type-support.date-time :as datetime]
     [com.fulcrologic.rad.routing.html5-history :as hist5 :refer [html5-history]]
     [com.fulcrologic.rad.routing.history :as history]
     [com.fulcrologic.rad.routing :as routing]))
-
-(defonce stats-accumulator
-  (tufte/add-accumulating-handler! {:ns-pattern "*"}))
 
 (m/defmutation fix-route
   "Mutation. Called after auth startup. Looks at the session. If the user is not logged in, it triggers authentication"
@@ -46,11 +42,3 @@
   (history/install-route-history! app (html5-history))
   (rad-app/install-ui-controls! app sui/all-controls)
   (app/mount! app Root "app"))
-
-(defonce performance-stats (tufte/add-accumulating-handler! {}))
-
-(defn pperf
-  "Dump the currently-collected performance stats"
-  []
-  (let [stats (not-empty @performance-stats)]
-    (println (tufte/format-grouped-pstats stats))))

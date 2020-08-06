@@ -8,9 +8,6 @@
            com.taoensso/encore                    {:mvn/version "2.120.0"}
            com.fulcrologic/guardrails             {:mvn/version "0.0.12"}
 
-           ;; Performance checks
-           com.taoensso/tufte                     {:mvn/version "2.1.0"}
-
            ;; Server
            mount                                  {:mvn/version "0.1.12"}
            hiccup                                 {:mvn/version "1.0.5"}
@@ -29,7 +26,7 @@
            org.clojure/clojurescript              {:mvn/version "1.10.773"}
            org.clojure/clojure                    {:mvn/version "1.10.1"}
            com.datomic/datomic-free               {:mvn/version "0.9.5697" :exclusions [org.slf4j/slf4j-nop]}
-           com.fulcrologic/fulcro-rad-datomic     {:mvn/version "0.0.4-alpha"}}
+           com.fulcrologic/fulcro-rad-datomic     {:mvn/version "0.0.5-alpha"}}
 
  :aliases {:dev {:extra-paths ["src/dev" "resources"]
                  :extra-deps  {thheller/shadow-cljs                {:mvn/version "2.10.14"}
