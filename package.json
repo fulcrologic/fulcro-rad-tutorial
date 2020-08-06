@@ -1,0 +1,26 @@
+{
+  "name": "rad-tutorial",
+  "version": "1.0.0",
+  "description": "Files related to tutorial videos",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fulcrologic/fulcro-rad-tutorial.git"
+  },
+  "author": "Fulcrologic, LLC",
+  "license": "MIT",
+  "bugs": {
+  },
+  "dependencies": {
+    "@js-joda/locale_en-us": "2.0.1",
+    "big.js": "5.2.2",
+    "js-joda": "1.11.0",
+    "js-joda-timezone": "2.1.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "semantic-ui-react": "^0.88.2",
+    "shadow-cljs": "2.10.19",
+    "victory": "^34.3.6"
+  },
+  "devDependencies": {}
+}

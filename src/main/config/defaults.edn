@@ -1,0 +1,36 @@
+{:org.immutant.web/config           {:port 3000
+                                     :host "localhost"}
+
+ :com.fulcrologic.rad.database-adapters.datomic/databases
+                                    {:main {:datomic/schema           :production
+                                            :datomic/driver           :mem
+                                            :datomic/database         "example"
+                                            :datomic/prevent-changes? true}}
+
+ :ring.middleware/defaults-config   {:params    {:keywordize true
+                                                 :multipart  true
+                                                 :nested     true
+                                                 :urlencoded true}
+                                     :cookies   true
+                                     :responses {:absolute-redirects     true
+                                                 :content-types          true
+                                                 :default-charset        "utf-8"
+                                                 :not-modified-responses true}
+                                     :session   true
+                                     :static    {:resources "public"}
+                                     :security  {:anti-forgery   false
+                                                 :hsts           true
+                                                 :ssl-redirect   false
+                                                 :frame-options  :sameorigin
+                                                 :xss-protection {:enable? true
+                                                                  :mode    :block}}}
+
+ :com.fulcrologic.rad.pathom/config {:trace?         false
+                                     ;; TODO: Elide params and such in logging
+                                     :sensitive-keys #{:password :com.example.model.account/password}
+                                     :log-requests?  true
+                                     :log-responses? true}
+
+ :taoensso.timbre/logging-config    {:level        :debug
+                                     :ns-whitelist []
+                                     :ns-blacklist []}}
