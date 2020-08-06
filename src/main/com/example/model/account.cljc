@@ -23,46 +23,39 @@
     [com.fulcrologic.rad.type-support.date-time :as datetime]))
 
 (defattr id :account/id :uuid
-  {ao/identity?                                     true
+  {ao/identity? true
    ;; NOTE: These are spelled out so we don't have to have either on classpath, which allows
    ;; independent experimentation. In a normal project you'd use ns aliasing.
-   ao/schema                                        :production
-   :com.fulcrologic.rad.database-adapters.sql/table "account"})
+   ao/schema    :production})
 
 (defattr email :account/email :string
   {ao/identities                                                   #{:account/id}
    ao/required?                                                    true
    ao/schema                                                       :production
-   :com.fulcrologic.rad.database-adapters.datomic/attribute-schema {:db/unique :db.unique/value}
-   })
-
+   :com.fulcrologic.rad.database-adapters.datomic/attribute-schema {:db/unique :db.unique/value}})
 
 (defattr active? :account/active? :boolean
-  {ao/identities                                          #{:account/id}
-   ao/schema                                              :production
-   :com.fulcrologic.rad.database-adapters.sql/column-name "active"
-   fo/default-value                                       true})
+  {ao/identities    #{:account/id}
+   ao/schema        :production
+   fo/default-value true})
 
 (defattr password :password/hashed-value :string
-  {ao/required?                                           true
-   ao/identities                                          #{:account/id}
-   ::auth/permissions                                     (fn [_] #{})
-   :com.fulcrologic.rad.database-adapters.sql/column-name "password"
-   ao/schema                                              :production})
+  {ao/required?       true
+   ao/identities      #{:account/id}
+   ::auth/permissions (fn [_] #{})
+   ao/schema          :production})
 
 (defattr password-salt :password/salt :string
-  {:com.fulcrologic.rad.database-adapters.sql/column-name "password_salt"
-   ::auth/permissions                                     (fn [_] #{})
-   ao/schema                                              :production
-   ao/identities                                          #{:account/id}
-   ao/required?                                           true})
+  {::auth/permissions (fn [_] #{})
+   ao/schema          :production
+   ao/identities      #{:account/id}
+   ao/required?       true})
 
 (defattr password-iterations :password/iterations :int
-  {ao/identities                                          #{:account/id}
-   ::auth/permissions                                     (fn [_] #{})
-   :com.fulcrologic.rad.database-adapters.sql/column-name "password_iterations"
-   ao/schema                                              :production
-   ao/required?                                           true})
+  {ao/identities      #{:account/id}
+   ::auth/permissions (fn [_] #{})
+   ao/schema          :production
+   ao/required?       true})
 
 (def account-roles {:account.role/superuser "Superuser"
                     :account.role/user      "Normal User"})
@@ -87,7 +80,6 @@
   {ao/target                                                       :address/id
    ao/cardinality                                                  :one
    ao/identities                                                   #{:account/id}
-   :com.fulcrologic.rad.database-adapters.sql/delete-referent?     true
    :com.fulcrologic.rad.database-adapters.datomic/attribute-schema {:db/isComponent true}
    ao/schema                                                       :production})
 

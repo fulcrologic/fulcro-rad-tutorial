@@ -13,14 +13,36 @@
     [com.example.ui.sales-report :as sales-report]
     [com.example.ui.dashboard :as dashboard]
     [com.fulcrologic.fulcro.application :as app]
+    [com.fulcrologic.fulcro.dom.events :as evt]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
     [com.fulcrologic.fulcro.dom.html-entities :as ent]
     [com.fulcrologic.fulcro.routing.dynamic-routing :refer [defrouter]]
     [com.fulcrologic.rad.authorization :as auth]
-    [com.fulcrologic.rad.form :as form]
+    [com.fulcrologic.rad.attributes-options :as ao]
+    [com.fulcrologic.rad.form :as form :refer [defsc-form]]
+    [com.fulcrologic.rad.form-options :as fo]
+    [com.fulcrologic.rad.report :as report :refer [defsc-report]]
+    [com.fulcrologic.rad.report-options :as ro]
     [com.fulcrologic.rad.ids :refer [new-uuid]]
     [com.fulcrologic.rad.routing :as rroute]
+    [com.example.model.widget :as widget]
     [taoensso.timbre :as log]))
+
+(defsc-form WidgetForm [this props]
+  {fo/id           widget/id
+   fo/title        "Widget"
+   fo/attributes   [widget/label widget/weight]
+   fo/route-prefix "widget"})
+
+(defsc-report WidgetList [this props]
+  {ro/route            "widgets"
+   ro/source-attribute :widget/all-widgets
+   ro/row-pk           widget/id
+   ro/form-links       {:widget/label WidgetForm}
+   ro/controls         {::reload {:label  "Run"
+                                  :type   :button
+                                  :action (fn [this] (report/run-report! this))}}
+   ro/columns          [widget/label]})
 
 (defsc LandingPage [this props]
   {:query         ['*]
@@ -35,7 +57,8 @@
    :router-targets      [LandingPage ItemForm InvoiceForm InvoiceList AccountList AccountForm AccountInvoices
                          sales-report/SalesReport InventoryReport
                          sales-report/RealSalesReport
-                         dashboard/Dashboard]}
+                         dashboard/Dashboard
+                         WidgetForm WidgetList]}
   ;; Normal Fulcro code to show a loader on slow route change (assuming Semantic UI here, should
   ;; be generalized for RAD so UI-specific code isn't necessary)
   (dom/div
@@ -71,6 +94,10 @@
                  (ui-dropdown-menu {}
                    (ui-dropdown-item {:onClick (fn [] (rroute/route-to! this AccountList {}))} "View All")
                    (ui-dropdown-item {:onClick (fn [] (form/create! this AccountForm))} "New")))
+               (ui-dropdown {:className "item" :text "Widget"}
+                 (ui-dropdown-menu {}
+                   (ui-dropdown-item {:onClick (fn [] (rroute/route-to! this WidgetList {}))} "List Widgets")
+                   (ui-dropdown-item {:onClick (fn [] (form/create! this WidgetForm))} "New")))
                (ui-dropdown {:className "item" :text "Inventory"}
                  (ui-dropdown-menu {}
                    (ui-dropdown-item {:onClick (fn [] (rroute/route-to! this InventoryReport {}))} "View All")
